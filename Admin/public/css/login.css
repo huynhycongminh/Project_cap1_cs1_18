@@ -1,79 +1,29 @@
-*{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+.login_main {
+  background-image: url('../image/Login/bgLogin.jpeg');
+  height: 100vh;
+  background-size: cover;
 }
-.login_main{
- 
-    background-image: linear-gradient(to bottom, rgb(95, 95, 95), rgb(34, 34, 34));
-    position: relative; 
-}
-.img_login{
-    width: 100%;
-    height: 100vh;
-    opacity: 0.4;
-    display: block;
-}
-/* html, body {
-    width:100%;
-    height:100%;
-} */
-#login {
-    position: absolute;
-    width:320px;
-    height: 420px;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:#000;
-    color:#fff;
-    padding:70px 30px;
-   
 
+#login{
+  margin: 0 auto;
+  width: 400px;
 }
+
+.form_login{
+  padding: 85px 10px 10px 10px;
+  background-color: #0000005c;
+}
+
+.label_login{
+  color: white;
+}
+
 .user_login{
-    width:100px;
-    height: 100px;
-    position:absolute;
-    top:-50px;
-    border-radius: 50%;
-    left:calc(50% - 50px);
+  border-radius: 50%;
+  transform: translate(75%, 50%);
+  width: 40%;
 }
-.Login_here{
-   text-align: center;
-   padding: 0 0 20px ;
-   font-size: 25px;
-  
-    
-}
- 
- /* input[type=text],  input[type=password]{ */
-.text_login{
-    width:100%;
-    margin-bottom:10%;
-    border:none;
-    border-bottom: 1px solid #fff;
-    background: transparent;
-    outline: none;
-    height: 30px;
-    color:#fff;
-    font-size:16px;
-}
-/* input[type=button] */
-.submit_login{
-    border:none;
-    outline: none;
-    height: 40px;
-    background: rgb(201, 7, 7);
-    font-size: 18px;
-    border-radius: 20px;
-    color:#fff;
-    width: 100%;
-}
-/* input[type=button]:hover */
-.submit_login:hover
-{
-    background:#ffc107;
-    color:#000;
 
+.form_login button{
+  width: 100%;
 }

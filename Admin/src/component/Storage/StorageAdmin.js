@@ -23,6 +23,11 @@ export default class StorageAdmin extends Component {
     });
   }
 
+  numberFormat(a){
+    var nf = new Intl.NumberFormat();
+    return nf.format(a)
+  }
+
   render() {
     // console.log(this.state.car);
     return (
@@ -117,7 +122,7 @@ export default class StorageAdmin extends Component {
                     />
                   </td>
                   <td>{car.name}</td>
-                  <td>1{car.prices}</td>
+                  <td>{this.numberFormat(car.prices)} VNĐ</td>
                   <td>{car.number}</td>
                   <td>
                     <button className="edit-button">

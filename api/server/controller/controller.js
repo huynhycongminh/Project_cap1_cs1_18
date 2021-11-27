@@ -165,24 +165,23 @@ exports.search_car = (req, res) => {
       res.send(data);
     });
 };
+
 // login
 exports.login = (req, res) => {
   AdminLogin.findOne()
     .lean()
     .exec(function (err, data) {
-      if (!req.query.username || !req.query.password) {
-        res.send("login failed");
-      } else if (
-        req.query.username === data.username &&
-        req.query.password === data.password
-      ) {
-        console.log(req.query);
-        req.session.user = data.username;
-        req.session.admin = true;
-        res.send("login success!");
-      } else res.send("Password or username incorrect !!!");
+      if (!req.body.username || !req.body.password) {
+        res.send('Missing User Or Password');
+      } else if ( req.body.username === data.username && req.body.password === data.password ) {
+          req.session.admin = true;
+          res.send(req.session.admin);
+      } else {
+          res.send('Wrong User Name OR Wrong Password');
+      }
     });
 };
+
 exports.logout = (req, res) => {
   req.session.destroy();
   res.send("logout success!");

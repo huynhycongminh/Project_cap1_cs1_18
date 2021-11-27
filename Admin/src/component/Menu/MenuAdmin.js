@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export default class MenuAdmin extends Component {
   constructor(props) {
@@ -13,6 +14,15 @@ export default class MenuAdmin extends Component {
       buttonState: !this.state.buttonState,
     });
   };
+
+  LogOutUser = () => {
+    if(Cookies.get('user')){
+      Cookies.remove('user');
+      window.location.reload();
+    } else {
+      return false;
+    }
+  }
 
   render() {
     return (
@@ -36,7 +46,7 @@ export default class MenuAdmin extends Component {
                 </NavLink>
               </li>
               <li className="menu-item">
-                <NavLink to="/Post">
+                <NavLink to="/post">
                   <img
                     src="./image/adminListofProduct/traffic_jam_80px.png"
                     alt="List Register"
@@ -80,7 +90,7 @@ export default class MenuAdmin extends Component {
                 </a>
               </li>
               <li className="info-item setting">
-                <a href>
+                <a onClick={this.LogOutUser} href>
                   <i class="fa fa-sign-out" aria-hidden="true"></i>
                 </a>
               </li>
