@@ -172,12 +172,15 @@ exports.login = (req, res) => {
     .lean()
     .exec(function (err, data) {
       if (!req.body.username || !req.body.password) {
-        res.send('Missing User Or Password');
-      } else if ( req.body.username === data.username && req.body.password === data.password ) {
-          req.session.admin = true;
-          res.send(req.session.admin);
+        res.send("Missing User Or Password");
+      } else if (
+        req.body.username === data.username &&
+        req.body.password === data.password
+      ) {
+        req.session.admin = true;
+        res.send(req.session.admin);
       } else {
-          res.send('Wrong User Name OR Wrong Password');
+        res.send("Wrong User Name OR Wrong Password");
       }
     });
 };
@@ -259,4 +262,47 @@ exports.get_image = (req, res) => {
   GFS.findOne({ filename: req.query.filename }).then((data) => {
     res.send(data);
   });
+};
+
+// edit car
+exports.edit_car = (req, res) => {
+  console.log(req.params);
+  Car.findOne({ _id: req.query._id }).then((data) => {
+    res.send(data);
+  });
+};
+
+// update car
+exports.update_car = (req, res) => {
+  Car.findById(req.params._id, function (err, car) {
+    if (!car) res.status(404).send("data is not found");
+    else {
+      car.name = req.body.name;
+      car.prices = req.body.prices;
+      car.number = req.body.number;
+      car
+        .save()
+        .then(() => {
+          res.json("Update complete");
+        })
+        .catch((err) => {
+          res.status(400).send("unable to update the database");
+        });
+    }
+  });
+};
+
+// delete car
+exports.delete_car = (req, res) => {
+  Car.deleteOne({ _id: req.params._id }, function (err) {
+    if (err) return handleError(err);
+  }).then((data) => res.json("Delete success"));
+};
+
+// multi delete car
+
+exports.multi_delete_car = (req, res) => {
+  Car.remove({ _id: { $in: req.query.ids } }, function (err) {
+    if (err) return handleError(err);
+  }).then((data) => res.json("Delete success"));
 };
