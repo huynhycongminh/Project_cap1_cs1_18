@@ -35,7 +35,6 @@ export default class StorageAdmin extends Component {
   }
 
   showModal = () => {
-    // debugger
     const { name, number, prices } = this.state;
     if (this.state.modalStatus === true) {
       return (
@@ -157,7 +156,6 @@ export default class StorageAdmin extends Component {
   handleCheckChildElement = (event) => {
     let cars = this.state.cars;
     cars.forEach((car) => {
-      debugger;
       if (car._id === parseInt(event.target.value))
         car.isChecked = event.target.checked;
     });
@@ -168,7 +166,6 @@ export default class StorageAdmin extends Component {
     let ids = this.state.cars
       .filter((car) => car.isChecked === true)
       .map((car) => parseInt(car._id));
-    debugger;
     axios
       .delete(`http://localhost:3000/api/multi_delete_car`, {
         params: { ids: ids },
