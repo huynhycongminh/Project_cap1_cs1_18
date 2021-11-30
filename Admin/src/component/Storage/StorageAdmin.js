@@ -288,7 +288,7 @@ export default class StorageAdmin extends Component {
                       className="btn btn-primary edit-button"
                       onClick={(event) => this.changeModalStatus(event)}
                     >
-                      <i class="fa fa-edit"></i>
+                      Edit
                     </button>
                   </td>
                   <td>
@@ -297,7 +297,7 @@ export default class StorageAdmin extends Component {
                       value={car._id}
                       onClick={(event) => this.deleteCar(event)}
                     >
-                      <i class="fa fa-remove"></i>
+                      Delete
                     </button>
                   </td>
                 </tr>
