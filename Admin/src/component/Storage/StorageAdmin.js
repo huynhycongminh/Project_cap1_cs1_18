@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Checkbox from "./Checkbox";
 export default class StorageAdmin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      car: [],
+      cars: [],
       car_models: [],
       modalStatus: false,
       edit_car: null,
@@ -22,7 +23,9 @@ export default class StorageAdmin extends Component {
       .get("http://localhost:3000/api/cars")
       .then((response) => response.data)
       .then((data) => {
-        this.setState({ car: data });
+        this.setState({
+          cars: data.map((data) => ({ ...data, isChecked: false })),
+        });
       });
     axios.get("http://localhost:3000/new_test_driver").then((data) => {
       this.setState({
@@ -39,6 +42,9 @@ export default class StorageAdmin extends Component {
         <form onSubmit={this.updateCar} method="PUT">
           <div className="modal open ">
             <div className="modal-container">
+              <div className="modal-close">
+                <i className="fa fa-close" />
+              </div>
               <div className="modal-header">
                 <div className="header-text">UPDATE QUANTITY</div>
               </div>
@@ -148,25 +154,24 @@ export default class StorageAdmin extends Component {
       });
   };
 
-  createIds = (event) => {
-    debugger;
-    const checked = event.target.checked;
-    if (checked) {
-      const id = parseInt(event.target.value);
-      this.setState({
-        ids: [...this.state.ids, id],
-      });
-    } else {
-      this.setState({
-        ids: this.state.ids.filter((id) => id !== parseInt(event.target.value)),
-      });
-    }
+  handleCheckChildElement = (event) => {
+    let cars = this.state.cars;
+    cars.forEach((car) => {
+      debugger;
+      if (car._id === parseInt(event.target.value))
+        car.isChecked = event.target.checked;
+    });
+    this.setState({ cars: cars });
   };
 
   multiDeleteCar = () => {
+    let ids = this.state.cars
+      .filter((car) => car.isChecked === true)
+      .map((car) => parseInt(car._id));
+    debugger;
     axios
       .delete(`http://localhost:3000/api/multi_delete_car`, {
-        params: { ids: this.state.ids },
+        params: { ids: ids },
       })
       .then(() => {
         this.setState({
@@ -185,9 +190,11 @@ export default class StorageAdmin extends Component {
       });
   };
 
-  checkedAll = () => {
+  checkedAll = (event) => {
+    let cars = this.state.cars;
+    cars.forEach((car) => (car.isChecked = event.target.checked));
     this.setState({
-      checked: !this.state.checked,
+      cars: cars,
     });
   };
   render() {
@@ -200,8 +207,8 @@ export default class StorageAdmin extends Component {
             <ul className="list-menu">
               <li className="item-menu">
                 <select className="filter-model mb-16">
-                  {this.state.car.map((cars) => (
-                    <option>{cars.name}</option>
+                  {this.state.cars.map((car) => (
+                    <option>{car.name}</option>
                   ))}
                 </select>
               </li>
@@ -233,7 +240,10 @@ export default class StorageAdmin extends Component {
             <thead>
               <tr>
                 <th scope="col">
-                  <input type="checkbox" onClick={this.checkedAll} />
+                  <input
+                    type="checkbox"
+                    onClick={(event) => this.checkedAll(event)}
+                  />
                 </th>
                 <th scope="col">ID</th>
                 <th scope="col">
@@ -256,14 +266,12 @@ export default class StorageAdmin extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.car.map((car) => (
+              {this.state.cars.map((car) => (
                 <tr>
                   <td>
-                    <input
-                      type="checkbox"
-                      value={car._id}
-                      onClick={this.createIds}
-                      checked={this.state.checked}
+                    <Checkbox
+                      {...car}
+                      handleCheckChildElement={this.handleCheckChildElement}
                     />
                   </td>
                   <td>{car._id}</td>
@@ -301,44 +309,6 @@ export default class StorageAdmin extends Component {
           </table>
         </div>
         {this.showModal()}
-        {/* <div className="modal open">
-  <div className="modal-container">
-    <div className="modal-header">
-      <div className="header-text">UPDATE QUANTITY</div>
-    </div>
-    <div className="modal-body">
-      <div className="row">
-        <div className="col-4">
-          <div className="row mb-32">
-            <div className="col">
-              <span className="lbl-title">Product Name:</span>
-              <span className="lbl-fname">Audi A6 2021</span>
-            </div>
-          </div>
-          <div className="row mb-32">
-            <div className="col">
-              <span className="lbl-title">Price:</span>
-              <span className="lbl-email">1.500.000.000</span>
-            </div>
-          </div>
-          <div className="row mb-32">
-            <div className="col">
-              <span className="lbl-title">Quantity:</span>
-              <span className="lbl-phonenumber"><input type="number" name id style={{width: '100px'}} /></span>
-            </div>
-          </div>
-        </div>
-        <div className="col-8">
-          <img src="./image/audi-a6-2021.jpg" alt="Audi A6" style={{width: '560px', borderRadius: '8px'}} />
-        </div>
-      </div>
-      <div className="mt-4 mb-16 confirm">
-        <div className="btn btn-danger">Return</div>
-        <div className="btn btn-success">Update</div>
-      </div>
-    </div>
-  </div>
-</div> */}
       </div>
     );
   }
